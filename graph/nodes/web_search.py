@@ -14,7 +14,15 @@ def web_search(state: GraphState) -> Dict[str, Any]:
     documents = state["documents"]
 
     docs = web_search_tool.invoke({"query": question})
-    web_results = "\n".join([d["content"] for d in docs])
+    
+    # Fix: Check the actual structure of docs and handle accordingly
+    if docs and isinstance(docs[0], dict) and "content" in docs[0]:
+        # Original expected format
+        web_results = "\n".join([d["content"] for d in docs])
+    else:
+        # Handle the case where docs items are directly strings
+        web_results = "\n".join(docs) if isinstance(docs, list) else str(docs)
+    
     web_results = Document(page_content=web_results)
     if documents is not None:
         documents.append(web_results)
