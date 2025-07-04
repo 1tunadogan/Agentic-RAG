@@ -51,4 +51,5 @@ l10n/
 python-env-tools/**
 .chroma
 .env
+qdrant_storage/
 
